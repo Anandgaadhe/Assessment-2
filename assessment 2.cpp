@@ -3,133 +3,132 @@
 
 using namespace std;
 
-// Class menu item
-class MenuItem {
-protected:
-    string name; 
-    int largePrice; 
-    int smallPrice;
-    int mediumPrice; 
-
+class Menu {
 public:
-    // Constructor to initialize a menu item 
-    MenuItem(string n, int lp, int sp, int mp) 
-        : name(n), largePrice(lp), smallPrice(sp), mediumPrice(mp) {}
-
-    // Display themenu item name
-    void display() const {
-        cout << "| " << name << (name.length() < 15 ? string(15 - name.length(), ' ') : "") 
-             << "| " <<"\n";
+    void displayMainMenu() {
+        cout << "\n.................... Tops Menu ..................... : " << "\n";
+        cout << "1. Pizzas" << "\n";
+        cout << "2. Burgers" << "\n";
+        cout << "3. Sandwiches" << "\n";
+        cout << "4. Rolls" << "\n";
+        cout << "5. Biryani" << "\n";
+        cout << "ENTER YOUR CHOICE: " << "\n";
     }
 
-   
-  void displaySizes() const {
-        cout << "|   1    | Large  | " << largePrice << "                   |" << endl;
-        cout << "|   2    | Small  | " << smallPrice << "                   |" << endl;
-        cout << "|   3    | Medium | " << mediumPrice << "                  |" << endl;
+   void displaySubMenu(int mainChoice) {
+        switch (mainChoice) {
+            case 1:
+                cout << "\nPIZZA MENU :" << "\n";
+                cout << "1. Small Pizza  = RS. 100" << "\n";
+                cout << "2. Medium Pizza = RS. 150" << "\n";
+                cout << "3. Large Pizza  = RS. 200" << "\n";
+                break;
+            case 2:
+                cout << "\nBURGER MENU :" << "\n";
+                cout << "1. Small Burger     = RS. 100" << "\n";
+                cout << "2. Medium Burger    = RS. 120" << "\n";
+                cout << "3. Large Burger     = RS. 150" << "\n";
+                break;
+            case 3:
+                cout << "\nSANDWICH MENU :" << "\n";
+                cout << "1. Small Grill Sandwich = RS. 90" << "\n";
+                cout << "2. Medium Sandwich      = RS. 125" << "\n";
+                cout << "3. Large Sandwich       = RS. 180" << "\n";
+                break;
+            case 4:
+                cout << "\nROLLS MENU :" << "\n";
+                cout << "1. Small Rolls   = RS. 80" << "\n";
+                cout << "2. Medium Rolls  = RS. 90" << "\n";
+                cout << "3. Large Rolls   = RS. 120" << "\n";
+                break;
+            case 5:
+                cout << "\nBIRYANI MENU :" << "\n";
+                cout << "1. Veggie Biryani         = RS. 100" << "\n";
+                cout << "2. Double Cheese Biryani  = RS. 110" << "\n";
+                cout << "3. Paneer Biryani        = RS. 190" << "\n";
+                break;
+            default:
+                cout << "Invalid choice" << "\n";
+         }
+        cout << "ENTER YOUR CHOICE: " << "\n";
     }
- int getPrice(int sizeChoice) const {
-        switch (sizeChoice) {
-            case 1: return largePrice; 
-            case 2: return smallPrice; 
-            case 3: return mediumPrice; 
-            default: return 0; 
+    int getPrice(int mainChoice, int subChoice) {
+        const int prices[5][3] = {
+            {100, 150, 200}, 
+            {100, 120, 150}, 
+            {90, 125, 180},  
+            {80, 90, 120},   
+            {100, 110, 190}  
+        };
+
+        if (mainChoice < 1 || mainChoice > 5 || subChoice < 1 || subChoice > 3) {
+            return 0; 
         }
-    }
-    string getName() const { return name; }
+
+        return prices[mainChoice - 1][subChoice - 1];
+     }
 };
-// Derived class for managing ordr
-class FastFoodOrder {
+class Order {
 private:
-    string customerName;
-    static const int menuSize = 5; // Fixed size for menu
-    MenuItem menu[menuSize]; // Array of menu items
+    string name;
+    double totalBill;
+
 public:
-    FastFoodOrder() 
-        : menu {
-            MenuItem("Pizza", 240, 100, 150),
-            MenuItem("Burger", 300, 100, 200),
-            MenuItem("Sandwich", 500, 250, 325),
-            MenuItem("Roll", 240, 100, 150),
-            MenuItem("Biryani", 240, 100, 150)
-        }   
-    {
-    }
-void setCustomerName(const string& name) {
-        customerName = name; // Assigns the name to customerName
-    }
- // Display the main menu
-      void displayMenu() {
-        cout << "\n-------- Mega Menu --------\n";
-        cout << "-----------------------------\n";
-        cout << "| Option | Item            |\n";
-        cout << "-----------------------------\n";
-        for (int i = 0; i < menuSize; ++i) {
-            cout << "|   " << (i + 1) << "    "; 
-            menu[i].display(); 
-        }
-        cout << "-----------------------------" << "\n";
-    }
-void displayItemMenu(int choice) {
-        cout << "\n---- " << menu[choice].getName() << " Sizes and Prices ----" << "\n";
-        cout << "----------------------------------------------" << "\n";
-        cout << "| Option | Size   | Price (Rs.)            |" << "\n";
-        cout << "----------------------------------------------" << "\n";
-        menu[choice].displaySizes(); // Call displaySizes method of MenuItem
-        cout << "----------------------------------------------" << "\n";
+    Order() : totalBill(0) {}
+    void askName() {
+        cout << "\n.........................Tops Fast Food........................." << "\n";
+        cout << "ENter your Name   " << "\n";
+        cin >> name;
+        cout << "\nHello, " << name << "\n";
     }
 
-    
-void placeOrder() {
-        char orderAgain; 
-        do {
-            displayMenu(); 
-            int choice; 
-            cout << "Please enter your choice 1 to 5: ";
-            cin >> choice; 
-            choice--; // Convert to zero-based index
+    void takeOrder(Menu& menu) {
+        int mainChoice, subChoice, quantity;
 
-    if (choice < 0 || choice >= menuSize) {
-                cout << "Invalid choice.\n"; 
-                continue; 
-            }
-displayItemMenu(choice); 
+        menu.displayMainMenu();
+        cin >> mainChoice;
 
-            int itemChoice; 
-            cout << "Please enter which item would you like to have 1 to 3: \n";
-            cin >> itemChoice;
+        if (mainChoice < 1 || mainChoice > 5) {
+            cout << "Invalid main choice" << "\n";
+            return;
+  }
 
-            int price = menu[choice].getPrice(itemChoice); // Get the price for the selected size
-            if (price == 0) {
-                cout << "Invalid item choice.\n";
-                continue; // Skip to the next itertion
-            }
- int quantity; 
-            cout << "Please enter the quantity: ";
-            cin >> quantity; 
-            cout << "----- Your Order ---------"<< "\n\n";
-            cout << "You ordered " << quantity << " " << (itemChoice == 1 ? "Large" : itemChoice == 2 ? "Small" : "Medium") 
-                 << " " << menu[choice].getName() << "\n\n";
+        menu.displaySubMenu(mainChoice);
+        cin >> subChoice;
 
-            cout << "\nYour total bill is = Rs. " << price * quantity << "\n\n";
-            cout << "Your order will arrive in 20 minutes." << "\n\n";
-            cout << "Thank you for ordering from Top Tech Fast Food!" << "\n\n";
+        if (subChoice < 1 || subChoice > 3) {
+            cout << "Invalid sub choice" << "\n";
+            return;
+      }
 
-            cout << "Would you like to order anything else? (Y/N): ";
-            cin >> orderAgain; 
+        cout << "\nEnter your quatity: " << "\n";
+        cin >> quantity;
 
-        } while (orderAgain == 'Y' || orderAgain == 'y'); 
+        if (quantity <= 0) {
+            cout << "Invalid quanity" << "\n";
+            return;
+           }
+        totalBill = totalBill+  menu.getPrice(mainChoice, subChoice) * quantity;
+}
+  void genBill() {
+        cout << "YOUR TOTAL BILL IS: RS. " << totalBill << "\n";
+}
+    bool continueOrdering() {
+        char choice;
+        cout << "\nWould you like to order anything else? (Y/N): " << "\n";
+        cin >> choice;
+        return (choice == 'y' || choice == 'Y');
     }
 };
-
 int main() {
-    FastFoodOrder order; 
-    string name; 
-    cout << "\n======TOPS TECH FAST FOOD======\n";
-    cout << "Please enter your name: ";
-    cin >> name; 
-    order.setCustomerName(name); 
-    order.placeOrder(); // Call method to place the order
+    Order order;
+    Menu menu;
+    order.askName();
 
-    return 0; 
+    do {
+        order.takeOrder(menu);
+        order.genBill();
+    } while (order.continueOrdering());
+    cout << "\nTHANK YOU for your order. Your order will be delivered in just 10 minutes only..." << "\n";
+    return 0;
 }
