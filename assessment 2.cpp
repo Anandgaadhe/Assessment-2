@@ -7,8 +7,8 @@ class Menu {
 public:
     void displayMainMenu() {
         cout << "\n.................... Tops Menu ..................... : " << "\n";
-        cout << "1. Pizzas" << "\n";
-        cout << "2. Burgers" << "\n";
+        cout << "1. Pizza" << "\n";
+        cout << "2. Burger" << "\n";
         cout << "3. Sandwiches" << "\n";
         cout << "4. Rolls" << "\n";
         cout << "5. Biryani" << "\n";
@@ -31,7 +31,7 @@ public:
                 break;
             case 3:
                 cout << "\nSANDWICH MENU :" << "\n";
-                cout << "1. Small Grill Sandwich = RS. 90" << "\n";
+                cout << "1. Small  Sandwich = RS. 90" << "\n";
                 cout << "2. Medium Sandwich      = RS. 125" << "\n";
                 cout << "3. Large Sandwich       = RS. 180" << "\n";
                 break;
@@ -44,8 +44,8 @@ public:
             case 5:
                 cout << "\nBIRYANI MENU :" << "\n";
                 cout << "1. Veggie Biryani         = RS. 100" << "\n";
-                cout << "2. Double Cheese Biryani  = RS. 110" << "\n";
-                cout << "3. Paneer Biryani        = RS. 190" << "\n";
+                cout << "2. Cheese Biryani  = RS. 110" << "\n";
+                cout << "3. lajij Biryani        = RS. 190" << "\n";
                 break;
             default:
                 cout << "Invalid choice" << "\n";
