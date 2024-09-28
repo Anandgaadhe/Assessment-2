@@ -3,132 +3,111 @@
 
 using namespace std;
 
-class Menu {
+class item {
+protected:
+    string n; 
+    int lp; 
+    int sp;
+    int mp; 
+
 public:
-    void displayMainMenu() {
-        cout << "\n.................... Tops Menu ..................... : " << "\n";
-        cout << "1. Pizza" << "\n";
-        cout << "2. Burger" << "\n";
-        cout << "3. Sandwiches" << "\n";
-        cout << "4. Rolls" << "\n";
-        cout << "5. Biryani" << "\n";
-        cout << "ENTER YOUR CHOICE: " << "\n";
+    item(string nn, int llp, int spp, int mmp) 
+        : n(nn), lp(llp), sp(spp), mp(mmp) {}
+    void d() const {
+        cout << n << (n.length() < 15 ? string(15 - n.length(), ' ') : "");
     }
-
-   void displaySubMenu(int mainChoice) {
-        switch (mainChoice) {
-            case 1:
-                cout << "\nPIZZA MENU :" << "\n";
-                cout << "1. Small Pizza  = RS. 100" << "\n";
-                cout << "2. Medium Pizza = RS. 150" << "\n";
-                cout << "3. Large Pizza  = RS. 200" << "\n";
-                break;
-            case 2:
-                cout << "\nBURGER MENU :" << "\n";
-                cout << "1. Small Burger     = RS. 100" << "\n";
-                cout << "2. Medium Burger    = RS. 120" << "\n";
-                cout << "3. Large Burger     = RS. 150" << "\n";
-                break;
-            case 3:
-                cout << "\nSANDWICH MENU :" << "\n";
-                cout << "1. Small  Sandwich = RS. 90" << "\n";
-                cout << "2. Medium Sandwich      = RS. 125" << "\n";
-                cout << "3. Large Sandwich       = RS. 180" << "\n";
-                break;
-            case 4:
-                cout << "\nROLLS MENU :" << "\n";
-                cout << "1. Small Rolls   = RS. 80" << "\n";
-                cout << "2. Medium Rolls  = RS. 90" << "\n";
-                cout << "3. Large Rolls   = RS. 120" << "\n";
-                break;
-            case 5:
-                cout << "\nBIRYANI MENU :" << "\n";
-                cout << "1. Veggie Biryani         = RS. 100" << "\n";
-                cout << "2. Cheese Biryani  = RS. 110" << "\n";
-                cout << "3. lajij Biryani        = RS. 190" << "\n";
-                break;
-            default:
-                cout << "Invalid choice" << "\n";
-         }
-        cout << "ENTER YOUR CHOICE: " << "\n";
+    void di() const {
+        cout << "  1 Large   " << lp << endl;
+        cout << "  2 Small " << sp << endl;
+        cout << "  3 Medium " << mp << endl;
     }
-    int getPrice(int mainChoice, int subChoice) {
-        const int prices[5][3] = {
-            {100, 150, 200}, 
-            {100, 120, 150}, 
-            {90, 125, 180},  
-            {80, 90, 120},   
-            {100, 110, 190}  
-        };
-
-        if (mainChoice < 1 || mainChoice > 5 || subChoice < 1 || subChoice > 3) {
-            return 0; 
+    int gp(int sc) const {
+        switch (sc) {
+            case 1: return lp; 
+            case 2: return sp; 
+            case 3: return mp; 
+            default: return 0; 
         }
-
-        return prices[mainChoice - 1][subChoice - 1];
-     }
-};
-class Order {
-private:
-    string name;
-    double totalBill;
-
-public:
-    Order() : totalBill(0) {}
-    void askName() {
-        cout << "\n.........................Tops Fast Food........................." << "\n";
-        cout << "ENter your Name   " << "\n";
-        cin >> name;
-        cout << "\nHello, " << name << "\n";
     }
+    string gn() const { return n; }
+};
 
-    void takeOrder(Menu& menu) {
-        int mainChoice, subChoice, quantity;
+class food {
+private:
+    string cn;
+    static const int ms = 5; 
+    item m[ms]; 
+public:
+    food() : m{
+        item("Pizza", 240, 100, 150),
+        item("Burger", 300, 100, 200),
+       item("Sandwich", 500, 250, 325),
+        item("Roll", 240, 100, 150),
+        item("Biryani", 240, 100, 150)
+        } {}
+ void sc(const string& nn) {
+        cn = nn; 
+    }       
+void dsplmn() 
+{
+        cout << "\n-------- Mega Menu --------\n";
+        m[0].d(); cout << "1\n"; 
+        m[1].d(); cout << "2\n"; 
+        m[2].d(); cout << "3\n"; 
+        m[3].d(); cout << "4\n"; 
+        m[4].d(); cout << "5\n";     
+    }
+    void dspl(int c) 
+	{
+        cout  << m[c].gn();
+        cout << "  Option  Size     Price            \n";
+        m[c].di();
+    }
+    void po() {
+        char oa; 
+        do {
+            dsplmn(); 
+            int c; 
+            cout << "Please enter your choice ";
+            cin >> c; 
+            c--;
 
-        menu.displayMainMenu();
-        cin >> mainChoice;
+            if (c < 0 || c >= ms) {
+                cout << "Invalid choice.\n"; 
+                continue; 
+            }
+            dspl(c); 
+            int ic; 
+            cout << "Please enter item \n";
+            cin >> ic;
+            int p = m[c].gp(ic); 
+            if (p == 0) {
+                cout << "Invalid item choice.\n";
+                continue; 
+            }
+            int q; 
+            cout << "Please enter the quantity: ";
+            cin >> q; 
+            cout << "----- Your Order ---------\n\n";
+            cout << "You ordered " << q << " " << (ic == 1 ? "Large" : ic == 2 ? "Small" : "Medium") 
+                 << " " << m[c].gn() << "\n\n";
+            cout << "\nYour total bill is = Rs. " << p * q << "\n\n";
+            cout << "Your order will arrive in 20 minutes.\n\n";
+            cout << "Thank you for ordering from Top Tech Fast Food!\n\n";
 
-        if (mainChoice < 1 || mainChoice > 5) {
-            cout << "Invalid main choice" << "\n";
-            return;
-  }
+            cout << "Would you like to order anything else? (Y/N): ";
+            cin >> oa; 
 
-        menu.displaySubMenu(mainChoice);
-        cin >> subChoice;
-
-        if (subChoice < 1 || subChoice > 3) {
-            cout << "Invalid sub choice" << "\n";
-            return;
-      }
-
-        cout << "\nEnter your quatity: " << "\n";
-        cin >> quantity;
-
-        if (quantity <= 0) {
-            cout << "Invalid quanity" << "\n";
-            return;
-           }
-        totalBill = totalBill+  menu.getPrice(mainChoice, subChoice) * quantity;
-}
-  void genBill() {
-        cout << "YOUR TOTAL BILL IS: RS. " << totalBill << "\n";
-}
-    bool continueOrdering() {
-        char choice;
-        cout << "\nWould you like to order anything else? (Y/N): " << "\n";
-        cin >> choice;
-        return (choice == 'y' || choice == 'Y');
+        } while (oa == 'Y' || oa == 'y'); 
     }
 };
 int main() {
-    Order order;
-    Menu menu;
-    order.askName();
-
-    do {
-        order.takeOrder(menu);
-        order.genBill();
-    } while (order.continueOrdering());
-    cout << "\nTHANK YOU for your order. Your order will be delivered in just 10 minutes only..." << "\n";
-    return 0;
+    food fo;
+    string n; 
+    cout << "\n======TOPS TECH FAST FOOD======\n";
+    cout << "Please enter your name: ";
+    cin >> n; 
+    fo.sc(n);
+    fo.po();
+    return 0; 
 }
